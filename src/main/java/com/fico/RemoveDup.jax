@@ -1,0 +1,89 @@
+package com.fico;
+
+import java.io.File;
+import static java.lang.System.exit;
+import static java.lang.System.in;
+
+/**
+ * RemoveDup
+ * Processes files - removes duplicate data
+ * Created by Ray Gayton on 4/20/2016.
+ * @param - full path of the directory to process
+ *
+ */
+public class RemoveDup
+{
+    public static void main(String args[])    {
+
+		/**
+		 * Check that the user entered a command line argument. If not, display an error message and exit.
+		 */
+        if (args.length == 0) {
+            System.out.println("Invalid number of arguments - missing input file name or directory.");
+            assert(true);
+            exit (-1);
+        }
+
+		/**
+		 * Check if the file or directory exists. If not, display an error message and exit.
+		 */
+         if (!checkIfFileExists(args[0]))
+         {
+            System.out.println("The file or directory entered is not valid: " + args[0]);
+			exit (-2);
+         }
+        
+		/**
+		 * Process the file or directory. If there is a problem, notify the user.
+		 */
+        if (!processInputData(args[0]))
+        {
+            System.out.println("The input is not a file or directory");
+			exit (-3);
+        }		
+    }
+	
+	/**
+     * checkIfFileExists
+	 * Check if file or directory exists.
+     * @return boolean
+	 */
+	public static boolean checkIfFileExists(String inputArg)
+	{
+        File file = new File(inputArg);
+
+        if (!file.exists()) {
+            return false;
+        }
+
+        return true;
+	}
+	
+	/**
+     * processInputData
+	 * Process input file or directory
+     * @return boolean
+	 */
+	public static boolean processInputData(String inputArg)
+	{
+        File file = new File(inputArg);
+	
+        ProcessFile pf = new ProcessFile();
+        ProcessDirectory pd = new ProcessDirectory();		
+		
+        if (file.isDirectory())
+        {
+            pd.processDirectory(file);
+
+        } else if (file.isFile()) {
+
+            pf.processFile(file);
+
+        } else  {
+			return false;
+		}
+
+        return true;
+	}
+
+}
